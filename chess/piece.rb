@@ -7,7 +7,7 @@ class Piece
     @board = board 
     @color = color
     @value = '*' 
-  endgi
+  end
 
   # def to_s 
   #   puts "#{symbol}"
