@@ -54,7 +54,9 @@ class Board
           end
         elsif row == 1
           board[row][col] = Pawn.new(:white, self, [row, col])
-        elsif row == 6
+        elsif row == 6 
+          board[row][col] = Pawn.new(:black, self, [row, col])
+        elsif row == 7
           if col == 0 || col == 7 
             board[row][col] = Rook.new(:black, self, [row, col])
           elsif col == 1 || col == 6
@@ -66,8 +68,6 @@ class Board
           elsif col == 4
             board[row][col] = King.new(:black, self, [row, col])
           end
-        elsif row == 7 
-          board[row][col] = Pawn.new(:black, self, [row, col])
         else
           board[row][col] = NullPiece.instance
         end
@@ -76,4 +76,46 @@ class Board
     board
   end
 
+   #to test (row, col): (1,5) -> (2, 5); (6, 4) -> (4, 4); (1,6)->(3,6); (0,3)->(3,7)
+  def in_check?(color)
+    own_king_pos = []
+    (0...grid.length).each do |row|
+      (0...grid.length).each do |col|
+        if grid[row][col].color == :color && grid[row][col].is_a?(King)
+          own_king_pos = grid[row][col].pos
+          break
+        end
+      end
+    end
+    opponent_pieces = []
+    (0...grid.length).each do |row|
+      (0...grid.length).each do |col|
+        if color == :white 
+          if grid[row][col].color == :black
+            opponent_pieces << grid[row][col]
+          end
+        elsif color == :black
+          if grid[row][col].color == :white
+            opponent_pieces << grid[row][col]
+          end
+        end
+      end
+    end
+    opponent_pieces.any? { |piece| piece.valid_moves.include?(own_king_pos) }
+  end
+
+  def checkmate?(color)
+    return false if !in_check?(color)
+    if in_check?(color)
+      own_pieces = []
+      (0...grid.length).each do |row|
+        (0...grid.length).each do |col|
+          if color == grid[row][col].color
+            own_pieces << grid[row][col]
+          end
+        end
+      end
+      own_pieces.all? { |piece| piece.valid_moves.empty? }
+    end
+  end
 end

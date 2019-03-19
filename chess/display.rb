@@ -10,7 +10,6 @@ class Display
   end
 
   def render 
-    @cursor.get_input
     system("clear")
     (0...8).each do |row|
       arr = []
@@ -31,6 +30,7 @@ class Display
       end
       puts arr.join(" ")
     end
+    @cursor.get_input
     render
   end
 end
