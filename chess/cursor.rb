@@ -78,33 +78,32 @@ class Cursor
   end
 
   def handle_key(key)
-    case key  
-    when "\r" || " "
+    case key 
+    when :return || :space
       @cursor_pos
-    when "h" || "a" || "\e[D"
+    when :left
       update_pos([0,-1])
       nil
-    when "j" || "s" || "\e[B"
+    when :down
       update_pos([1, 0])
       nil
-    when "k" || "w" || "\e[A"
+    when :up
       update_pos([-1, 0])
       nil
-    when "l" || "d" || "\e[C"
+    when :right
       update_pos([0, 1])
       nil
-    when "\u0003" 
+    when :ctrl_c
       Process.exit(0)
     end  
     
   end
 
   def update_pos(diff)
-    
     x, y = diff 
     a, b = @cursor_pos
 
-    if board.valid_pos?([x+a, y+b])
+    if Board.valid_pos?([x+a, y+b])
       @cursor_pos = [x+a, y+b]
     end
   end
