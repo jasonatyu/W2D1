@@ -53,5 +53,4 @@ end
 e_1 = Employee.new('A', 'TA', 10000, 'Ned')
 e_2 = Employee.new('B', 'TA', 5000, 'Ned')
 m_2 = Manager.new("Darren", "Manager", 25000, 'Ned', [e_2])
-
 m = Manager.new('Ned', 'Founder', 50000, nil, [e_1, m_2]) 
