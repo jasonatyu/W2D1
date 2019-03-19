@@ -1,5 +1,4 @@
 require_relative 'piece'
-require 'colorize'
 
 class Board  
   attr_accessor :grid
@@ -40,11 +39,36 @@ class Board
     board = Array.new(8) { Array.new(8, []) }
     (0...8).each do |row|
       (0...8).each do |col|
-        if row == 0 || row == 1
-          board[row][col] = Piece.new(:white, self, [row, col])
-        elsif row == 6 || row == 7
-          board[row][col] = Piece.new(:black, self, [row, col])
-        else 
+        #white
+        if row == 0 
+          if col == 0 || col == 7 
+            board[row][col] = Rook.new(:white, self, [row, col])
+          elsif col == 1 || col == 6
+            board[row][col] = Knight.new(:white, self, [row, col])
+          elsif col == 2 || col == 5
+            board[row][col] = Bishop.new(:white, self, [row, col])
+          elsif col == 3
+            board[row][col] = Queen.new(:white, self, [row, col])
+          elsif col == 4
+            board[row][col] = King.new(:white, self, [row, col])
+          end
+        elsif row == 1
+          board[row][col] = Pawn.new(:white, self, [row, col])
+        elsif row == 6
+          if col == 0 || col == 7 
+            board[row][col] = Rook.new(:black, self, [row, col])
+          elsif col == 1 || col == 6
+            board[row][col] = Knight.new(:black, self, [row, col])
+          elsif col == 2 || col == 5
+            board[row][col] = Bishop.new(:black, self, [row, col])
+          elsif col == 3
+            board[row][col] = Queen.new(:black, self, [row, col])
+          elsif col == 4
+            board[row][col] = King.new(:black, self, [row, col])
+          end
+        elsif row == 7 
+          board[row][col] = Pawn.new(:black, self, [row, col])
+        else
           board[row][col] = NullPiece.instance
         end
       end

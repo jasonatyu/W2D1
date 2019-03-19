@@ -1,18 +1,16 @@
 require 'singleton'
 require_relative 'board'
+require_relative 'slideable'
+require_relative 'stepable'
 require 'byebug'
 
 class Piece 
-  attr_reader :color, :board, :value
+  attr_reader :color, :board
   attr_accessor :pos
   def initialize(color, board, pos)
     @pos = pos
     @board = board 
     @color = color
-    @value = '*' 
-  end
-
-  def valid_moves
   end
 
   def symbol
@@ -26,6 +24,120 @@ class NullPiece < Piece
   include Singleton
   def initialize 
   end 
+end
+
+class King < Piece 
+  include Stepable 
+
+  def symbol
+    if self.color == :white
+      checkmark = "\u2654"
+      checkmark.encode('utf-8')
+    else
+      checkmark = "\u265A"
+      checkmark.encode('utf-8')
+    end
+  end
+
+  protected 
+  def move_diffs
+    [[-1,-1],[-1,0],[-1,1],[1,0],[1,-1],[1,1],[0,1],[0,-1]]
+  end
+
+end
+
+class Knight < Piece 
+  include Stepable 
+
+  def symbol
+    if self.color == :white
+      checkmark = "\u2658"
+      checkmark.encode('utf-8')
+    else
+      checkmark = "\u265E"
+      checkmark.encode('utf-8')
+    end
+  end
+
+  protected 
+  def move_diffs
+    [[-1,2],[-2,1],[-2,-1],[-1,-2],[1,-2],[2,-1],[2,1],[1,2]]
+  end
+
+
+end
+
+class Queen < Piece 
+  include Slideable 
+
+  def initialize(color, board, pos)
+    super
+  end 
+
+  def symbol
+    if self.color == :white
+      checkmark = "\u2655"
+      checkmark.encode('utf-8')
+    else
+      checkmark = "\u265B"
+      checkmark.encode('utf-8')
+    end
+  end
+
+  protected 
+  def move_dirs 
+   return 'both'
+  end
+
+end
+
+class Rook < Piece 
+  include Slideable 
+
+  def initialize(color, board, pos)
+    super
+  end 
+
+  def symbol
+    if self.color == :white
+      checkmark = "\u2656"
+      checkmark.encode('utf-8')
+    else
+      checkmark = "\u265C"
+      checkmark.encode('utf-8')
+    end
+  end
+
+  protected 
+  def move_dirs 
+   return 'horizontal'
+  end
+
+end
+
+class Bishop < Piece 
+  include Slideable 
+
+  def initialize(color, board, pos)
+    super
+  end 
+
+  def symbol
+    if self.color == :white
+      checkmark = "\u2657"
+      checkmark.encode('utf-8')
+    else
+      checkmark = "\u265D"
+      checkmark.encode('utf-8')
+    end
+  end
+
+  protected 
+  def move_dirs 
+   return 'diagonal'
+  end
+
+
 end
 
 class Pawn < Piece 
@@ -43,7 +155,13 @@ class Pawn < Piece
   end
 
   def symbol
-    puts "P"
+    if self.color == :white
+      checkmark = "\u2659"
+      checkmark.encode('utf-8')
+    else
+      checkmark = "\u265F"
+      checkmark.encode('utf-8')
+    end
   end
 
   def valid_moves
