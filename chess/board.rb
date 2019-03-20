@@ -2,7 +2,7 @@ require_relative 'piece'
 
 class Board  
   attr_accessor :grid
-  def initialize
+  def initialize(grid = nil)
     @grid = populate
   end
 
@@ -83,6 +83,7 @@ class Board
       (0...grid.length).each do |col|
         if grid[row][col].color == :color && grid[row][col].is_a?(King)
           own_king_pos = grid[row][col].pos
+          puts "King is at #{own_king_pos}"
           break
         end
       end
@@ -117,5 +118,23 @@ class Board
       end
       own_pieces.all? { |piece| piece.valid_moves.empty? }
     end
+  end
+
+  def dup
+    grid_dup = Array.new(8) { Array.new(8, []) }
+    board_dup = Board.new(grid_dup)
+    grid.each do |ele|
+      if ele.is_a?(Array)
+        grid_dup << ele.dup
+      else
+        new_pos = []
+        ele.pos.each do |i|
+          new_pos << i
+        end
+        new_ele = ele.class.new(ele.color, board_dup, new_pos)
+        grid_dup << new_ele
+      end
+    end
+    board_dup
   end
 end

@@ -36,4 +36,5 @@ class Display
 end
 
 b = Board.new 
-d = Display.new(b)
+b_dup = b.dup
+d = Display.new(b_dup)

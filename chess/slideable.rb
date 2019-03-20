@@ -5,9 +5,8 @@ module Slideable
     elsif move_dirs == 'diagonal'
       diagonal_dirs
     elsif move_dirs == 'both'
-      horizontal = horizontal_dirs
-      diagonal = diagonal_dirs
-      horizontal + diagonal
+      moves = horizontal_dirs + diagonal_dirs
+      moves
     end
   end
 
